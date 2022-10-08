@@ -69,12 +69,12 @@ export default {
           label: 'Cash',
         },
         {
-          value: 'Card',
-          label: 'Card',
+          value: 'Credit',
+          label: 'Credit',
         },
         {
-          value: 'Option3',
-          label: 'Option3',
+          value: 'Check',
+          label: 'Check',
         },
       ]
     }
