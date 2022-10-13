@@ -58,4 +58,16 @@ nav a.router-link-exact-active {
 .el-header {
   background: #545c64;
 }
+
+.background {
+  height: calc(100% + 40px);
+  overflow: hidden;
+  /* background-color: blue; */
+  margin: -20px;
+  background-size: 100% 100% !important;
+}
+
+.el-main {
+  padding: 0 !important;
+}
 </style>

@@ -31,5 +31,15 @@ console.log(pic)
   width: 100%;
   height: 100%; /**宽高100%是为了图片铺满屏幕 */
 }
+
+.food {
+  margin: 10px;
+  width: 500px;
+  height: 500px;
+}
+
+.home-wrapper {
+  background: antiquewhite;
+}
 </style>
 

@@ -63,15 +63,15 @@ export default {
 </script>
 
 <style scoped>
-.background {
-  height: calc(100% + 40px);
-  overflow: hidden;
-  background-color: blue;
-  margin: -20px;
-}
+
 
 .box-card {
   margin: 100px auto;
   width: 400px;
 }
+
+.background {
+   background: url('../assets/pizza.jpg');
+}
+
 </style>
