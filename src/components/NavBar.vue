@@ -9,6 +9,7 @@
              @select="handleSelect">
       <el-menu-item index="/">Menu</el-menu-item>
       <el-menu-item index="/reserve">Reservation</el-menu-item>
+      <el-menu-item index="/account">Account</el-menu-item>
     </el-menu>
     <div class="operate-wrap">
       <el-button type="primary"

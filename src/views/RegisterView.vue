@@ -2,18 +2,22 @@
   <div class="background">
     <el-card class="box-card">
       <el-form>
-        <h3>Register For An Online Ordering Account</h3>
-        <el-form-item>
+        <h3>Register For An Online Account</h3>
+        <el-form-item required
+                      prop="userName">
           <el-input v-model="registerForm.userName"
                     placeholder="Username"></el-input>
         </el-form-item>
-        <el-form-item>
+
+        <el-form-item required
+                      prop="password">
           <el-input type="password"
                     v-model="registerForm.password"
                     placeholder="Password"></el-input>
         </el-form-item>
 
-        <el-form-item>
+        <el-form-item required
+                      prop="mailing_address">
           <el-input v-model="registerForm.mailing_address"
                     placeholder="Mailing Address"></el-input>
         </el-form-item>
@@ -25,12 +29,15 @@
                        size="large" />
         </el-form-item>
 
-        <el-form-item v-if="!checked">
+        <el-form-item v-if="!checked"
+                      required
+                      prop="billing_address">
           <el-input v-model="registerForm.billing_address"
                     placeholder="Billing Address"></el-input>
         </el-form-item>
 
-        <el-form-item>
+        <el-form-item required
+                      prop="value">
           <el-select v-model="registerForm.value"
                      clearable
                      placeholder="preferred payment method">
@@ -43,7 +50,7 @@
 
         <el-form-item>
           <el-button type="primary"
-                     @click="login">COMPLETE MY ACCOUNT</el-button>
+                     @click="Register">COMPLETE MY ACCOUNT</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -51,6 +58,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'Register-Page',
   data () {
@@ -82,12 +91,14 @@ export default {
     }
   },
   methods: {
-    login () {
+
+    Register () {
       console.log(this.registerForm.userName)
       console.log(this.registerForm.password)
 
       // 通过 Axios 来发送异步 http 请求 (增删改查)
-      this.$axios.post('/login', {
+
+      axios.post('/api/registered', {
         userName: this.registerForm.userName,
         password: this.registerForm.password
       })
@@ -96,6 +107,7 @@ export default {
         //   console.log(resp)
         // })
         .then(resp => {
+          console.log(resp)
           if (resp.data.code === 0) {
             console.log(resp.data.user) // 参数是哪里来的
             this.$router.replace('/index') // 不理解
