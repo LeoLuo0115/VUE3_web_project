@@ -4,8 +4,8 @@
       <el-form>
         <h3>Register For An Online Account</h3>
         <el-form-item required
-                      prop="userName">
-          <el-input v-model="registerForm.userName"
+                      prop="username">
+          <el-input v-model="registerForm.username"
                     placeholder="Username"></el-input>
         </el-form-item>
 
@@ -65,7 +65,7 @@ export default {
   data () {
     return {
       registerForm: {
-        userName: '',
+        username: '',
         password: '',
         mailing_address: '',
         billing_address: '',
@@ -76,15 +76,15 @@ export default {
 
       options: [
         {
-          value: 'Cash',
+          value: 1,
           label: 'Cash',
         },
         {
-          value: 'Credit',
+          value: 2,
           label: 'Credit',
         },
         {
-          value: 'Check',
+          value: 3,
           label: 'Check',
         },
       ]
@@ -93,14 +93,17 @@ export default {
   methods: {
 
     Register () {
-      console.log(this.registerForm.userName)
+      console.log(this.registerForm.username)
       console.log(this.registerForm.password)
 
       // 通过 Axios 来发送异步 http 请求 (增删改查)
 
       axios.post('/api/registered', {
-        userName: this.registerForm.userName,
-        password: this.registerForm.password
+        username: this.registerForm.username,
+        password: this.registerForm.password,
+        mailing_address: this.registerForm.mailing_address,
+        billing_address: this.registerForm.billing_address,
+        value: this.registerForm.value
       })
         // 如果成功就会调用 .then 方法 失败会调用 .catch 方法
         // .then(function(resp){
@@ -110,11 +113,11 @@ export default {
           console.log(resp)
           if (resp.data.code === 0) {
             console.log(resp.data.user) // 参数是哪里来的
-            this.$router.replace('/index') // 不理解
+            this.$router.replace('/index')
             // replace 
             // push
           } else {
-            console.log(resp.data.msg) // 失败输出 msg？
+            console.log(resp.data.msg) // 失败输出 msg
           }
         })
       console.log(11)
