@@ -2,6 +2,7 @@
   <div class="background">
     <el-card class="box-card">
       <el-form :model="form"
+               :rules="rules"
                ref="formRef">
         <h3>Make Your Reservation Today</h3>
         <el-form-item required
@@ -44,9 +45,9 @@
         </el-form-item>
 
         <el-form-item required
-                      prop="Name">
-          <el-input v-model="form.username"
-                    placeholder="Name"></el-input>
+                      prop="name">
+          <el-input v-model="form.name"
+                    placeholder="name"></el-input>
         </el-form-item>
 
         <el-form-item required
@@ -61,9 +62,22 @@
                     placeholder="Email Address"></el-input>
         </el-form-item>
 
+        <el-form-item required
+                      prop="value">
+          <el-select v-model="form.value"
+                     clearable
+                     placeholder="preferred payment method">
+            <el-option v-for="item in options"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value" />
+          </el-select>
+        </el-form-item>
+
         <el-form-item>
           <el-button type="primary"
-                     @click="reserve">Reserve</el-button>
+                     :loading="loading"
+                     @click="reserve('formRef')">Reserve</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -78,12 +92,41 @@ export default {
     return {
       form: {
         headcount: 1,
-        startTime: "",
-        endTime: "",
-        datetime: "",
-        username: "",
-        phonenumber: "",
-        email: ""
+        startTime: '',
+        endTime: '',
+        datetime: '',
+        name: '',
+        phonenumber: '',
+        email: '',
+        value: '',
+      },
+
+      username: sessionStorage.getItem('username'),
+
+      options: [
+        {
+          value: 1,
+          label: 'Cash',
+        },
+        {
+          value: 2,
+          label: 'Credit',
+        },
+        {
+          value: 3,
+          label: 'Check',
+        },
+      ],
+
+      rules: {
+        phonenumber: [
+          { required: true, message: 'Please Enter phonenumber', trigger: 'blur' },
+          { min: 10, max: 10, message: 'Must Be length of 10 number', trigger: 'change' }
+        ],
+        email: [
+          { required: true, message: 'Please Enter email', trigger: 'blur' },
+          { min: 6, max: 20, message: '长度在 6 到 14 个字符', trigger: 'change' }
+        ]
       }
     }
   },
@@ -99,13 +142,13 @@ export default {
             confirmButtonText: 'OK',
             cancelButtonText: 'Cancel',
             type: 'warning'
-          }).then(() => {
-            //在这里发请求
-            // this.$message({
-            //   type: 'success',
-            //   message: 'Delete completed'
-            // });
           })
+            .then(() => {
+              //在这里发请求
+              this.$message({
+
+              })
+            })
         }
       })
 

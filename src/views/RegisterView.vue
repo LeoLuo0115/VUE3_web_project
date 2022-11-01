@@ -1,7 +1,9 @@
 <template>
   <div class="background">
     <el-card class="box-card">
-      <el-form>
+      <el-form :model="registerForm"
+               :rules="rules"
+               ref="formRef">
         <h3>Register For An Online Account</h3>
         <el-form-item required
                       prop="username">
@@ -50,7 +52,8 @@
 
         <el-form-item>
           <el-button type="primary"
-                     @click="Register">COMPLETE MY ACCOUNT</el-button>
+                     :loading="loading"
+                     @click="Register('formRef')">COMPLETE MY ACCOUNT</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -74,6 +77,8 @@ export default {
 
       checked: false,
 
+      loading: false,
+
       options: [
         {
           value: 1,
@@ -87,40 +92,66 @@ export default {
           value: 3,
           label: 'Check',
         },
-      ]
+      ],
+
+      rules: {
+        username: [
+          { required: true, message: 'Please Enter Username', trigger: 'blur' },
+          { min: 6, max: 14, message: '长度在 6 到 14 个字符', trigger: 'change' }
+        ],
+        password: [
+          { required: true, message: 'Please Enter Username', trigger: 'blur' },
+          { min: 6, max: 14, message: '长度在 6 到 14 个字符', trigger: 'change' }
+        ]
+      }
     }
   },
   methods: {
 
-    Register () {
+    Register (formName) {
+
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.loading = true
+
+          axios.post('/api/registered', {
+            username: this.registerForm.username,
+            password: this.registerForm.password,
+            mailing_address: this.registerForm.mailing_address,
+            billing_address: this.registerForm.billing_address,
+            value: this.registerForm.value
+          })
+            // 如果成功就会调用 .then 方法 失败会调用 .catch 方法
+            // .then(function(resp){
+            //   console.log(resp)
+            // })
+            .then(resp => {
+              console.log(resp)
+              if (resp.data.code === '200') {
+                this.$message.success('Register Successfully!')
+                this.$router.replace('/login')
+                // replace 
+                // push
+              } else {
+                this.$message.error('Register Failed!')
+                this.$message.error(resp.data.msg)
+              }
+            })
+            .finally(() => {
+              this.loading = false
+            })
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+
+
       console.log(this.registerForm.username)
       console.log(this.registerForm.password)
 
       // 通过 Axios 来发送异步 http 请求 (增删改查)
 
-      axios.post('/api/registered', {
-        username: this.registerForm.username,
-        password: this.registerForm.password,
-        mailing_address: this.registerForm.mailing_address,
-        billing_address: this.registerForm.billing_address,
-        value: this.registerForm.value
-      })
-        // 如果成功就会调用 .then 方法 失败会调用 .catch 方法
-        // .then(function(resp){
-        //   console.log(resp)
-        // })
-        .then(resp => {
-          console.log(resp)
-          if (resp.data.code === 0) {
-            console.log(resp.data.user) // 参数是哪里来的
-            this.$router.replace('/index')
-            // replace 
-            // push
-          } else {
-            console.log(resp.data.msg) // 失败输出 msg
-          }
-        })
-      console.log(11)
     },
 
 
