@@ -86,6 +86,7 @@
 
 <script>
 import dayjs from 'dayjs'
+import axios from 'axios'
 
 export default {
   data () {
@@ -99,6 +100,7 @@ export default {
         phonenumber: '',
         email: '',
         value: '',
+        login_check: ''
       },
 
       username: sessionStorage.getItem('username'),
@@ -143,11 +145,27 @@ export default {
             cancelButtonText: 'Cancel',
             type: 'warning'
           })
-            .then(() => {
-              //在这里发请求
-              this.$message({
 
-              })
+          console.log(this.form.headcount)
+          console.log(this.form.startTime)
+          console.log(this.form.endTime)
+
+          axios.post('/api/reserve', {
+            headcount: this.form.headcount,
+            startTime: this.form.startTime,
+            endTime: this.form.endTime,
+            datetime: this.form.datetime,
+            name: this.form.name,
+            phonenumber: this.form.phonenumber,
+            email: this.form.email,
+            value: this.form.value,
+
+            login_check: sessionStorage.getItem("username")
+          })
+
+            .then(resp => {
+              console.log(resp)
+              console.log(sessionStorage.getItem("username"))
             })
         }
       })
