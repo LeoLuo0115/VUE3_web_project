@@ -87,6 +87,7 @@
 <script>
 import dayjs from 'dayjs'
 import axios from 'axios'
+import router from '@/router'
 
 export default {
   data () {
@@ -127,12 +128,41 @@ export default {
         ],
         email: [
           { required: true, message: 'Please Enter email', trigger: 'blur' },
-          { min: 6, max: 20, message: '长度在 6 到 14 个字符', trigger: 'change' }
+          // { min: 6, max: 20, message: '长度在 6 到 14 个字符', trigger: 'change' }
+          { min: 6, max: 20, message: 'length between 6 to 20', trigger: 'change' }
         ]
       }
     }
   },
   methods: {
+    hleper () {
+      axios.post('/api/reserve', {
+        headcount: this.form.headcount,
+        startTime: this.form.startTime,
+        endTime: this.form.endTime,
+        datetime: this.form.datetime,
+        name: this.form.name,
+        phonenumber: this.form.phonenumber,
+        email: this.form.email,
+        value: this.form.value,
+
+        login_check: sessionStorage.getItem("username")
+      })
+
+        .then(resp => {
+          console.log(resp)
+          console.log(sessionStorage.getItem("username"))
+
+          if (resp.data.code === '200') {
+            this.$message.success('Reservation Successfully!')
+
+          } else {
+            // console.log(resp.data.msg) // 失败输出 msg
+            this.$message.error('Reservation failed!')
+          }
+        })
+    },
+
     reserve () {
       this.$refs.formRef.validate(vaild => {
         if (vaild) {
@@ -146,27 +176,31 @@ export default {
             type: 'warning'
           })
 
-          console.log(this.form.headcount)
-          console.log(this.form.startTime)
-          console.log(this.form.endTime)
+            .then(() => {
+              if (sessionStorage.getItem("username")) {
+                this.hleper()
+              }
+              else {
+                let msg = 'Do you want to Register? '
+                this.$confirm(msg, 'Warning', {
+                  confirmButtonText: 'Register',
+                  cancelButtonText: 'No, I will book anyway',
+                  type: 'warning'
+                })
+                  .then(() => {
+                    this.$router.replace('/register')
+                  })
+                  .catch(() => {
+                    this.hleper()
+                  })
+              }
 
-          axios.post('/api/reserve', {
-            headcount: this.form.headcount,
-            startTime: this.form.startTime,
-            endTime: this.form.endTime,
-            datetime: this.form.datetime,
-            name: this.form.name,
-            phonenumber: this.form.phonenumber,
-            email: this.form.email,
-            value: this.form.value,
+              console.log(this.form.headcount)
+              console.log(this.form.startTime)
+              console.log(this.form.endTime)
 
-            login_check: sessionStorage.getItem("username")
-          })
-
-            .then(resp => {
-              console.log(resp)
-              console.log(sessionStorage.getItem("username"))
             })
+
         }
       })
 

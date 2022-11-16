@@ -97,11 +97,13 @@ export default {
       rules: {
         username: [
           { required: true, message: 'Please Enter Username', trigger: 'blur' },
-          { min: 6, max: 14, message: '长度在 6 到 14 个字符', trigger: 'change' }
+          // { min: 6, max: 14, message: '长度在 6 到 14 个字符', trigger: 'change' }
+          { min: 6, max: 14, message: 'length between 6 to 14', trigger: 'change' }
         ],
         password: [
           { required: true, message: 'Please Enter Username', trigger: 'blur' },
-          { min: 6, max: 14, message: '长度在 6 到 14 个字符', trigger: 'change' }
+          // { min: 6, max: 14, message: '长度在 6 到 14 个字符', trigger: 'change' }
+          { min: 6, max: 14, message: 'length between 6 to 14', trigger: 'change' }
         ]
       }
     }

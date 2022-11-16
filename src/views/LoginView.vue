@@ -42,11 +42,13 @@ export default {
       rules: {
         username: [
           { required: true, message: 'Please Enter Username', trigger: 'blur' },
-          { min: 6, max: 14, message: '长度在 6 到 14 个字符', trigger: 'change' }
+          // { min: 6, max: 14, message: '长度在 6 到 14 个字符', trigger: 'change' }
+          { min: 6, max: 14, message: 'length between 6 to 14', trigger: 'change' }
         ],
         password: [
           { required: true, message: 'Please Enter Username', trigger: 'blur' },
-          { min: 6, max: 14, message: '长度在 6 到 14 个字符', trigger: 'change' }
+          // { min: 6, max: 14, message: '长度在 6 到 14 个字符', trigger: 'change' }
+          { min: 6, max: 14, message: 'length between 6 to 14', trigger: 'change' }
         ]
       }
     }
@@ -76,16 +78,19 @@ export default {
             username: this.loginForm.username,
             password: this.loginForm.password
           })
+
             // 如果成功就会调用 .then 方法 失败会调用 .catch 方法
-            // .then(function(resp){
-            //   console.log(resp)
-            // })
+
             .then(resp => {
               console.log(resp)
               if (resp.data.code === '200') {
                 this.$message.success('Login Successfully!')
 
                 sessionStorage.setItem('username', this.loginForm.username)
+
+                sessionStorage.setItem('Account_Info', JSON.stringify(resp.data.data))
+
+
                 this.$router.replace('/reserve')
 
               } else {
